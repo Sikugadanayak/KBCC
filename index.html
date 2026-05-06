@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KBCC – Knowledge Post Coaching Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1f3c;
+    --navy-mid: #162c52;
+    --gold: #d4a017;
+    --gold-light: #f0c842;
+    --cream: #fdf8ee;
+    --cream-dark: #f5eedc;
+    --text: #1a1a2e;
+    --muted: #5a6074;
+    --white: #ffffff;
+    --accent: #e05c2a;
+    --border: rgba(212,160,23,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 64px;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .nav-brand {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .nav-logo {
+    width: 44px; height: 44px; background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-size: 18px; color: var(--navy);
+    letter-spacing: 0.5px;
+  }
+
+  .nav-title {
+    color: var(--white);
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    letter-spacing: 0.3px;
+  }
+
+  .nav-title span { color: var(--gold-light); }
+
+  .nav-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 100px 5% 60px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 55%; height: 100%;
+    background: var(--navy-mid);
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .hero-dots {
+    position: absolute; top: 40px; right: 5%;
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px;
+    opacity: 0.12;
+  }
+
+  .hero-dots span {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold);
+    display: block;
+  }
+
+  .hero-content { position: relative; max-width: 600px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(212,160,23,0.15);
+    border: 1px solid var(--gold);
+    border-radius: 100px;
+    padding: 6px 16px;
+    color: var(--gold-light);
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.8px;
+    margin-bottom: 24px;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gold-light);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 32px;
+    max-width: 480px;
+  }
+
+  .hero-stats {
+    display: flex; gap: 36px; margin-bottom: 36px;
+  }
+
+  .stat-item .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--gold-light);
+  }
+
+  .stat-item .stat-label {
+    font-size: 12px; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 13px 28px;
+    border-radius: 6px;
+    font-size: 14px; font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.35);
+    color: var(--white);
+    margin-left: 12px;
+  }
+
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  /* ── SECTION BASE ── */
+  section { padding: 80px 5%; }
+
+  .section-label {
+    font-size: 12px; font-weight: 500; letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    max-width: 560px;
+    margin-bottom: 48px;
+  }
+
+  /* ── ANNOUNCEMENT BAND ── */
+  .announce-band {
+    background: var(--accent);
+    color: var(--white);
+    text-align: center;
+    padding: 13px 5%;
+    font-size: 14px; font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .announce-band span { font-weight: 300; opacity: 0.85; margin: 0 12px; }
+
+  /* ── ABOUT ── */
+  .about-section { background: var(--white); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .about-visual {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-visual::after {
+    content: 'KBCC';
+    position: absolute; bottom: -20px; right: -10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 90px; font-weight: 700;
+    color: rgba(212,160,23,0.07);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .about-highlight {
+    display: flex; gap: 16px; align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .about-icon {
+    width: 44px; height: 44px; border-radius: 8px;
+    background: rgba(212,160,23,0.15);
+    border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+
+  .about-highlight h4 {
+    color: var(--gold-light);
+    font-size: 15px; margin-bottom: 4px;
+  }
+
+  .about-highlight p { color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.6; }
+
+  .about-text .section-title { margin-bottom: 16px; }
+
+  .about-text p { color: var(--muted); margin-bottom: 16px; }
+
+  .location-card {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 24px;
+  }
+
+  .location-icon { font-size: 22px; margin-top: 2px; }
+
+  .location-card strong { display: block; font-size: 13px; color: var(--navy); margin-bottom: 2px; }
+  .location-card span { font-size: 13px; color: var(--muted); }
+
+  /* ── COURSES ── */
+  .courses-section { background: var(--cream-dark); }
+
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .course-card {
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 28px 20px;
+    text-align: center;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .course-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.25s;
+  }
+
+  .course-card:hover::before { transform: scaleX(1); }
+  .course-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(13,31,60,0.1); }
+
+  .course-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 700;
+    color: var(--navy-mid); opacity: 0.08;
+    line-height: 1; margin-bottom: -16px;
+  }
+
+  .course-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .course-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .course-tag {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 4px 12px;
+    background: rgba(212,160,23,0.12);
+    color: #8a6200;
+    border-radius: 100px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.5px;
+  }
+
+  /* ── FACULTY ── */
+  .faculty-section { background: var(--white); }
+
+  .faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .faculty-card {
+    background: var(--cream);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 28px 20px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .faculty-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+
+  .faculty-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    margin: 0 auto 16px;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; color: var(--gold);
+    border: 3px solid var(--gold);
+  }
+
+  .faculty-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--navy); margin-bottom: 4px;
+  }
+
+  .faculty-subject {
+    font-size: 12px; font-weight: 500; color: var(--gold);
+    letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px;
+  }
+
+  .faculty-bio { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .contact-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 7px 18px;
+    border: 1.5px solid var(--navy);
+    border-radius: 6px;
+    font-size: 12px; color: var(--navy);
+    text-decoration: none; cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+  }
+
+  .contact-btn:hover { background: var(--navy); color: var(--white); }
+
+  /* ── RESULTS ── */
+  .results-section { background: var(--navy); }
+
+  .results-section .section-title { color: var(--white); }
+  .results-section .section-label { color: var(--gold); }
+  .results-section .section-desc { color: rgba(255,255,255,0.55); }
+
+  .results-tabs {
+    display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid rgba(212,160,23,0.3);
+    color: rgba(255,255,255,0.6);
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  .tab.active, .tab:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy);
+  }
+
+  .results-table-wrap {
+    background: var(--navy-mid);
+    border-radius: 10px;
+    border: 1px solid rgba(212,160,23,0.2);
+    overflow: hidden;
+  }
+
+  .results-table {
+    width: 100%; border-collapse: collapse;
+  }
+
+  .results-table thead { background: rgba(212,160,23,0.1); }
+
+  .results-table th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid rgba(212,160,23,0.2);
+  }
+
+  .results-table td {
+    padding: 14px 20px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .results-table tr:last-child td { border-bottom: none; }
+  .results-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  .score-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 12px; font-weight: 500;
+  }
+
+  .score-badge.high { background: rgba(39,192,91,0.15); color: #4de688; }
+  .score-badge.mid { background: rgba(212,160,23,0.15); color: var(--gold-light); }
+  .score-badge.low { background: rgba(224,92,42,0.15); color: #f5845a; }
+
+  /* ── CONTACT ── */
+  .contact-section { background: var(--cream-dark); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-size: 1.5rem; color: var(--navy); margin-bottom: 16px;
+  }
+
+  .contact-info p { color: var(--muted); margin-bottom: 28px; }
+
+  .info-item {
+    display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px;
+  }
+
+  .info-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: var(--navy);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .info-item strong { display: block; font-size: 13px; color: var(--navy); margin-bottom: 2px; }
+  .info-item span { font-size: 13px; color: var(--muted); }
+
+  .contact-form {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 36px;
+  }
+
+  .contact-form h3 {
+    font-size: 1.3rem; color: var(--navy); margin-bottom: 24px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-group label {
+    display: block;
+    font-size: 12px; font-weight: 500;
+    color: var(--navy); letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid rgba(13,31,60,0.12);
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--cream);
+    transition: border 0.2s;
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--gold);
+    background: var(--white);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 100px; }
+
+  .form-submit {
+    width: 100%;
+    padding: 13px;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 7px;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 4px;
+  }
+
+  .form-submit:hover { background: var(--gold); color: var(--navy); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    padding: 40px 5%;
+    border-top: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  footer .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; color: var(--white);
+  }
+
+  footer .footer-brand span { color: var(--gold); }
+
+  footer p { font-size: 13px; }
+
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--navy);
+    color: var(--white);
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    border-left: 4px solid var(--gold);
+    z-index: 999;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .toast.show { transform: translateX(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .hero::before { display: none; }
+    .hero-stats { gap: 20px; }
+    .nav-links { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero { padding-top: 90px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAND -->
+<div class="announce-band">
+  🎉 Admissions Open for Summer Season 2025 <span>|</span> New Session Begins June 1st <span>|</span> Classes VI – X
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">KB</div>
+    <div class="nav-title">KBCC <span>Coaching Center</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#faculty">Faculty</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-dots" id="dots"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Admissions Open — Summer 2025</div>
+    <h1>Knowledge Post<br><span>Coaching Center</span></h1>
+    <p class="hero-sub">Empowering students from Class VI to X with focused, expert-led coaching in the heart of Beribeli, Odisha.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Classes Offered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Result Transparency</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">Expert</div>
+        <div class="stat-label">Faculty Team</div>
+      </div>
+    </div>
+    <a href="#contact" class="btn btn-gold">Enroll Now</a>
+    <a href="#courses" class="btn btn-outline">View Courses</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-grid">
+    <div class="about-visual">
+      <div class="about-highlight">
+        <div class="about-icon">📚</div>
+        <div>
+          <h4>Quality Education</h4>
+          <p>Structured syllabus aligned with board curriculum for every class from VI to X.</p>
+        </div>
+      </div>
+      <div class="about-highlight">
+        <div class="about-icon">🏆</div>
+        <div>
+          <h4>Proven Results</h4>
+          <p>Regular weekly, monthly, and half-yearly assessments to track every student's progress.</p>
+        </div>
+      </div>
+      <div class="about-highlight">
+        <div class="about-icon">👩‍🏫</div>
+        <div>
+          <h4>Expert Faculty</h4>
+          <p>Experienced teachers dedicated to making every concept clear and simple.</p>
+        </div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">About Us</div>
+      <h2 class="section-title">Building Bright Futures in Denkana</h2>
+      <p>KBCC – Knowledge Post Coaching Center is a dedicated tuition center located in Beribeli, Denkana, Odisha. We believe every student deserves personalized attention and a strong academic foundation.</p>
+      <p>Our center provides comprehensive coaching for students from Class VI to X, covering all major subjects with regular assessments and transparent result tracking for parents and students.</p>
+      <div class="location-card">
+        <div class="location-icon">📍</div>
+        <div>
+          <strong>Our Location</strong>
+          <span>Beribeli, In front of Junta High School, Perjang, Denkana, Odisha – 759120</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="courses-section" id="courses">
+  <div class="section-label">What We Offer</div>
+  <h2 class="section-title">Courses for Class VI – X</h2>
+  <p class="section-desc">Comprehensive tuition coaching across all core subjects, tailored for each class level.</p>
+  <div class="courses-grid">
+    <div class="course-card">
+      <div class="course-num">6</div>
+      <div class="course-title">Class VI</div>
+      <p class="course-desc">Foundation building with focus on core subjects — Mathematics, Science, English & Social Studies.</p>
+      <span class="course-tag">Foundation</span>
+    </div>
+    <div class="course-card">
+      <div class="course-num">7</div>
+      <div class="course-title">Class VII</div>
+      <p class="course-desc">Strengthening core concepts with deeper practice and regular tests across all subjects.</p>
+      <span class="course-tag">Core Skills</span>
+    </div>
+    <div class="course-card">
+      <div class="course-num">8</div>
+      <div class="course-title">Class VIII</div>
+      <p class="course-desc">Advanced concept coverage and board-oriented study patterns introduced progressively.</p>
+      <span class="course-tag">Advanced</span>
+    </div>
+    <div class="course-card">
+      <div class="course-num">9</div>
+      <div class="course-title">Class IX</div>
+      <p class="course-desc">Board preparation begins — rigorous practice, mock tests and subject mastery.</p>
+      <span class="course-tag">Board Prep</span>
+    </div>
+    <div class="course-card">
+      <div class="course-num">10</div>
+      <div class="course-title">Class X</div>
+      <p class="course-desc">Intensive board exam coaching with full syllabus revision and model paper practice.</p>
+      <span class="course-tag">Board Exam</span>
+    </div>
+  </div>
+</section>
+
+<!-- FACULTY -->
+<section class="faculty-section" id="faculty">
+  <div class="section-label">Our Teachers</div>
+  <h2 class="section-title">Meet the Faculty</h2>
+  <p class="section-desc">Experienced, passionate educators who are committed to your child's academic success.</p>
+  <div class="faculty-grid">
+    <div class="faculty-card">
+      <div class="faculty-avatar">RS</div>
+      <div class="faculty-name">Rajesh Sahoo</div>
+      <div class="faculty-subject">Mathematics</div>
+      <p class="faculty-bio">Specialises in making complex maths problems simple and enjoyable for students.</p>
+      <button class="contact-btn" onclick="contactFaculty('Rajesh Sahoo')">Contact</button>
+    </div>
+    <div class="faculty-card">
+      <div class="faculty-avatar">PM</div>
+      <div class="faculty-name">Priya Mahanta</div>
+      <div class="faculty-subject">Science</div>
+      <p class="faculty-bio">Brings concepts to life with clear explanations and real-world examples.</p>
+      <button class="contact-btn" onclick="contactFaculty('Priya Mahanta')">Contact</button>
+    </div>
+    <div class="faculty-card">
+      <div class="faculty-avatar">SK</div>
+      <div class="faculty-name">Suresh Kumar</div>
+      <div class="faculty-subject">English & Social Studies</div>
+      <p class="faculty-bio">Helps students build strong language skills and a love for reading and writing.</p>
+      <button class="contact-btn" onclick="contactFaculty('Suresh Kumar')">Contact</button>
+    </div>
+    <div class="faculty-card">
+      <div class="faculty-avatar">AB</div>
+      <div class="faculty-name">Anita Behera</div>
+      <div class="faculty-subject">Odia & Hindi</div>
+      <p class="faculty-bio">Expert in regional languages, ensuring students excel in both Odia and Hindi exams.</p>
+      <button class="contact-btn" onclick="contactFaculty('Anita Behera')">Contact</button>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section" id="results">
+  <div class="section-label">Performance Tracking</div>
+  <h2 class="section-title">Student Results</h2>
+  <p class="section-desc">We publish results regularly so parents and students can track progress throughout the year.</p>
+
+  <div class="results-tabs">
+    <button class="tab active" onclick="showResults('weekly', this)">Weekly</button>
+    <button class="tab" onclick="showResults('monthly', this)">Monthly</button>
+    <button class="tab" onclick="showResults('halfyearly', this)">Half Yearly</button>
+    <button class="tab" onclick="showResults('yearly', this)">Yearly</button>
+  </div>
+
+  <div class="results-table-wrap">
+    <table class="results-table" id="resultsTable">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Class</th>
+          <th>Subject</th>
+          <th>Score</th>
+          <th>Rank</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="section-label">Get in Touch</div>
+  <h2 class="section-title">Enquire About Admissions</h2>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>We'd love to hear from you</h3>
+      <p>Reach out for admissions, course details, fee structure, or any queries about KBCC.</p>
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div>
+          <strong>Address</strong>
+          <span>Beribeli, In front of Junta High School, Perjang, Denkana, Odisha – 759120</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🕐</div>
+        <div>
+          <strong>Timing</strong>
+          <span>Monday – Saturday, 6:00 AM – 8:00 PM</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">📅</div>
+        <div>
+          <strong>New Session</strong>
+          <span>Starting June 1st, 2025. Admissions currently open!</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <h3>Send an Enquiry</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Student Name</label>
+          <input type="text" id="studentName" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label>Parent / Guardian</label>
+          <input type="text" id="parentName" placeholder="Full name">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="+91 00000 00000">
+        </div>
+        <div class="form-group">
+          <label>Class Applying For</label>
+          <select id="classSelect">
+            <option value="">Select class</option>
+            <option>Class VI</option>
+            <option>Class VII</option>
+            <option>Class VIII</option>
+            <option>Class IX</option>
+            <option>Class X</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="message" placeholder="Any questions or special requirements..."></textarea>
+      </div>
+      <button class="form-submit" onclick="submitForm()">Submit Enquiry</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">KBCC <span>Knowledge Post Coaching Center</span></div>
+    <p style="margin-top:6px; font-size:13px;">Beribeli, Denkana, Odisha – 759120</p>
+  </div>
+  <p>© 2025 KBCC. All rights reserved.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Generate hero dots
+  const dotsEl = document.getElementById('dots');
+  for (let i = 0; i < 64; i++) {
+    dotsEl.innerHTML += '<span></span>';
+  }
+
+  // Results data
+  const resultsData = {
+    weekly: [
+      { name: 'Ananya Das', cls: 'X', subject: 'Mathematics', score: 95, rank: 1 },
+      { name: 'Rohan Nayak', cls: 'IX', subject: 'Science', score: 88, rank: 2 },
+      { name: 'Sneha Patra', cls: 'VIII', subject: 'English', score: 85, rank: 3 },
+      { name: 'Arjun Sahu', cls: 'X', subject: 'Science', score: 82, rank: 4 },
+      { name: 'Meena Rath', cls: 'VII', subject: 'Mathematics', score: 78, rank: 5 },
+    ],
+    monthly: [
+      { name: 'Arjun Sahu', cls: 'X', subject: 'Science', score: 91, rank: 1 },
+      { name: 'Ananya Das', cls: 'X', subject: 'Mathematics', score: 89, rank: 2 },
+      { name: 'Prashant Mishra', cls: 'IX', subject: 'Social Studies', score: 84, rank: 3 },
+      { name: 'Kavita Mohanty', cls: 'VIII', subject: 'English', score: 80, rank: 4 },
+      { name: 'Ravi Behera', cls: 'VI', subject: 'Odia', score: 76, rank: 5 },
+    ],
+    halfyearly: [
+      { name: 'Sneha Patra', cls: 'X', subject: 'Overall', score: 92, rank: 1 },
+      { name: 'Ananya Das', cls: 'X', subject: 'Overall', score: 90, rank: 2 },
+      { name: 'Rohan Nayak', cls: 'IX', subject: 'Overall', score: 85, rank: 3 },
+      { name: 'Prashant Mishra', cls: 'IX', subject: 'Overall', score: 81, rank: 4 },
+      { name: 'Meena Rath', cls: 'VIII', subject: 'Overall', score: 77, rank: 5 },
+    ],
+    yearly: [
+      { name: 'Ananya Das', cls: 'X', subject: 'Overall', score: 94, rank: 1 },
+      { name: 'Arjun Sahu', cls: 'X', subject: 'Overall', score: 91, rank: 2 },
+      { name: 'Sneha Patra', cls: 'IX', subject: 'Overall', score: 88, rank: 3 },
+      { name: 'Rohan Nayak', cls: 'IX', subject: 'Overall', score: 83, rank: 4 },
+      { name: 'Kavita Mohanty', cls: 'VIII', subject: 'Overall', score: 79, rank: 5 },
+    ],
+  };
+
+  function scoreClass(s) {
+    return s >= 90 ? 'high' : s >= 75 ? 'mid' : 'low';
+  }
+
+  function showResults(type, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const data = resultsData[type];
+    const tbody = document.getElementById('resultsBody');
+    tbody.innerHTML = data.map(r => `
+      <tr>
+        <td>${r.name}</td>
+        <td>Class ${r.cls}</td>
+        <td>${r.subject}</td>
+        <td><span class="score-badge ${scoreClass(r.score)}">${r.score}%</span></td>
+        <td>#${r.rank}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Init results
+  showResults('weekly', document.querySelector('.tab.active'));
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function contactFaculty(name) {
+    showToast('✅ Enquiry sent to ' + name + '. We will reach out shortly!');
+  }
+
+  function submitForm() {
+    const name = document.getElementById('studentName').value.trim();
+    const cls = document.getElementById('classSelect').value;
+    if (!name || !cls) {
+      showToast('⚠️ Please fill in the student name and class.');
+      return;
+    }
+    showToast('✅ Enquiry submitted! We will contact you soon.');
+    ['studentName','parentName','phone','message'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('classSelect').value = '';
+  }
+</script>
+</body>
+</html>
